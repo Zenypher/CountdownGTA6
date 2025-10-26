@@ -8,6 +8,10 @@
     }
   }
 
+  footer {
+    font-size: 0.75rem;
+  }
+
   #logo svg {
     width: 128px;
     height: 128px;
@@ -18,7 +22,7 @@
   }
 
   #timer {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 }
 
@@ -42,6 +46,10 @@
 
 /* Tablet screen */
 @media only screen and (min-width: 768px) {
+  footer {
+    font-size: 0.8rem;
+  }
+
   .title-div {
     gap: 10rem;
   }
@@ -74,6 +82,10 @@
 
   .title-div {
     gap: 20rem;
+  }
+
+  footer {
+    font-size: 1rem;
   }
 }
 
@@ -172,18 +184,20 @@ main {
 }
 
 #timer {
+  padding: 2rem;
+
   display: inline-flex;
   align-items: center;
 
   letter-spacing: 0.2rem;
   color: hsl(340, 95%, 75%);
-  text-shadow: 0px 0px 25px hsla(0, 0%, 0%, 0.5);
+  text-shadow: 0px 0px 15px var(--dark-gradient);
 
   text-wrap: wrap;
 
   animation-name: fade-in;
   animation-delay: 1s;
-  animation-duration: 2s;
+  animation-duration: 0.75s;
   animation-direction: normal;
 }
 
