@@ -5,7 +5,6 @@ A sleek, real-time countdown timer website for the Grand Theft Auto VI release d
 ## Features
 
 - **Live Countdown Timer** — Real-time countdown showing months, days, hours, minutes, and seconds until GTA VI releases
-- **Responsive Design** — Works seamlessly on desktop, tablet, and mobile devices
 - **Modern Aesthetic** — Colorful, urban-inspired design with gradient overlays and smooth animations
 - **Blurred Background** — Eye-catching background image and gradient overlay effect
 - **Custom Fonts** — Typography using Google Fonts for a premium feel
@@ -42,7 +41,7 @@ countdowngta6/
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Zenypher/CountdownGTA6.git
    cd countdowngta6
    ```
 
@@ -157,7 +156,7 @@ This project is open source and available for personal use.
 
 - Social media sharing buttons
 - News feed section
-- Community forum or chat
 - Dark/light theme toggle
 - Leaderboard or trivia section
 - API integration for official GTA VI updates
+- Better responsive design
