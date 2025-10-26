@@ -1,0 +1,165 @@
+@import url("base.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  max-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  background: url("/assets/gtaVI_artwork.jpg");
+  background-size: cover;
+  background-position: center;
+
+  color: var(--text);
+}
+
+body::before {
+  content: "";
+  background: linear-gradient(
+    to bottom,
+    hsla(224, 69%, 52%, 25%),
+    hsla(323, 97%, 65%, 25%),
+    hsla(29, 77%, 58%, 25%)
+  );
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -2;
+}
+
+header {
+  display: flex;
+  min-height: 16vh;
+  max-height: 100dvh;
+
+  background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.75), transparent);
+  color: white;
+
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    color: hsl(40, 100%, 75%);
+    font-size: 3rem;
+    letter-spacing: 0.05rem;
+  }
+}
+
+.title-1 {
+  margin-right: 25rem;
+}
+
+.title-1.animate {
+  animation-name: fade-in-left;
+  animation-duration: 2s;
+  animation-direction: normal;
+}
+
+.title-2.animate {
+  animation-name: fade-in-right;
+  animation-duration: 2s;
+  animation-duration: normal;
+}
+
+web-logo {
+  position: absolute;
+  top: -20px;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: hsl(40, 100%, 85%);
+
+  p {
+    font-weight: 200;
+    /* animation-name: fade-from-below;
+    animation-duration: 2s; */
+  }
+
+  background: linear-gradient(to top, hsla(0, 0%, 0%, 0.75), transparent);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#timer {
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 5rem;
+  letter-spacing: 0.2rem;
+  color: hsl(340, 95%, 75%);
+  text-shadow: 0px 0px 25px hsla(0, 0%, 0%, 0.5);
+
+  animation-name: fade-in;
+  animation-delay: 1s;
+  animation-duration: 2s;
+  animation-direction: normal;
+}
+
+#logo.animate {
+  animation-name: fade-in;
+  animation-duration: 2s;
+  animation-direction: normal;
+}
+
+@keyframes fade-in {
+  0% {
+    filter: blur(25px);
+    scale: 0%;
+  }
+  65% {
+    filter: blur(0px);
+    scale: 110%;
+  }
+  100% {
+    scale: 100%;
+  }
+}
+
+@keyframes fade-in-left {
+  0% {
+    filter: blur(50px);
+    transform: translateX(-200px);
+  }
+  65% {
+    filter: blur(0px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes fade-in-right {
+  0% {
+    filter: blur(50px);
+    transform: translateX(200px);
+  }
+  65% {
+    filter: blur(0px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes fade-from-below {
+  0% {
+    transform: translateY(50px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
