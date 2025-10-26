@@ -150,13 +150,13 @@ This is a fan project and is not affiliated with Rockstar Games or Take-Two Inte
 
 ## License
 
-This project is open source and available for personal use.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Future Enhancements
 
 - Social media sharing buttons
 - News feed section
-- Dark/light theme toggle
-- Leaderboard or trivia section
 - API integration for official GTA VI updates
 - Better responsive design
+- New and refined animations
+- Slideshow style background image
