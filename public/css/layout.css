@@ -1,5 +1,82 @@
 @import url("base.css");
 
+/* Phone screen */
+@media only screen and (max-width: 600px) {
+  header {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+
+  #logo svg {
+    width: 128px;
+    height: 128px;
+  }
+
+  .title-div {
+    gap: 8rem;
+  }
+
+  #timer {
+    font-size: 5rem;
+  }
+}
+
+/* Large phone screen */
+@media only screen and (min-width: 600px) {
+  header {
+    h1 {
+      font-size: 3rem;
+    }
+  }
+
+  #logo svg {
+    width: 128px;
+    height: 128px;
+  }
+
+  #timer {
+    font-size: 6rem;
+  }
+}
+
+/* Tablet screen */
+@media only screen and (min-width: 768px) {
+  .title-div {
+    gap: 10rem;
+  }
+}
+
+/* Laptop screen */
+@media only screen and (min-width: 992px) {
+}
+
+/* Desktop screen */
+@media only screen and (min-width: 1200px) {
+  header {
+    h1 {
+      font-size: 3.5rem;
+    }
+  }
+
+  #logo {
+    top: -20px;
+
+    svg {
+      width: 256px;
+      height: 256px;
+    }
+  }
+
+  #timer {
+    font-size: 5rem;
+  }
+
+  .title-div {
+    gap: 20rem;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -32,46 +109,45 @@ body::before {
   left: 0;
   height: 100%;
   width: 100%;
+  pointer-events: none;
   z-index: -2;
 }
 
 header {
   display: flex;
-  min-height: 16vh;
-  max-height: 100dvh;
+  min-height: 20vh;
 
-  background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.75), transparent);
+  background: linear-gradient(to bottom, var(--dark-gradient), transparent);
   color: white;
 
   justify-content: center;
   align-items: center;
-
-  h1 {
-    color: hsl(40, 100%, 75%);
-    font-size: 3rem;
-    letter-spacing: 0.05rem;
-  }
 }
 
-.title-1 {
-  margin-right: 25rem;
+.title-div {
+  color: hsl(40, 100%, 75%);
+  letter-spacing: 0.05rem;
+
+  display: flex;
+  text-align: center;
+
+  user-select: none;
 }
 
-.title-1.animate {
+.title-div h1:nth-child(1) {
   animation-name: fade-in-left;
   animation-duration: 2s;
   animation-direction: normal;
 }
 
-.title-2.animate {
+.title-div h1:nth-child(2) {
   animation-name: fade-in-right;
   animation-duration: 2s;
   animation-duration: normal;
 }
 
-web-logo {
+#logo {
   position: absolute;
-  top: -20px;
 }
 
 footer {
@@ -85,23 +161,25 @@ footer {
     animation-duration: 2s; */
   }
 
-  background: linear-gradient(to top, hsla(0, 0%, 0%, 0.75), transparent);
+  background: linear-gradient(to top, var(--dark-gradient), transparent);
 }
 
 main {
   display: flex;
   justify-content: center;
-  align-items: center;
+
+  text-align: center;
 }
 
 #timer {
   display: inline-flex;
   align-items: center;
 
-  font-size: 5rem;
   letter-spacing: 0.2rem;
   color: hsl(340, 95%, 75%);
   text-shadow: 0px 0px 25px hsla(0, 0%, 0%, 0.5);
+
+  text-wrap: wrap;
 
   animation-name: fade-in;
   animation-delay: 1s;
