@@ -37,7 +37,7 @@ function startCountdown(targetDateString) {
 }
 
 addEventListener("DOMContentLoaded", () => {
-  startCountdown("2026-05-26");
+  startCountdown("2026-11-19");
   pageLogo.classList.add("animate");
   leftTitle.classList.add("animate");
   rightTitle.classList.add("animate");
