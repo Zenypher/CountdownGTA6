@@ -1,6 +1,8 @@
 const pageLogo = document.getElementById("logo");
-const leftTitle = document.querySelector(".title-1");
-const rightTitle = document.querySelector(".title-2");
+const footerText = document.querySelector("#footer-text");
+
+footerText.innerHTML = `&copy; ${new Date().getFullYear()} Sebastian Iosif | Grand Theft Auto VI Countdown | Powered by
+        caffeine and ⭐⭐⭐⭐⭐`;
 
 function startCountdown(targetDateString) {
   const timerElement = document.getElementById("timer");
@@ -18,10 +20,10 @@ function startCountdown(targetDateString) {
 
     const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
     const days = Math.floor(
-      (distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)
+      (distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24),
     );
     const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -39,6 +41,4 @@ function startCountdown(targetDateString) {
 addEventListener("DOMContentLoaded", () => {
   startCountdown("2026-11-19");
   pageLogo.classList.add("animate");
-  leftTitle.classList.add("animate");
-  rightTitle.classList.add("animate");
 });
