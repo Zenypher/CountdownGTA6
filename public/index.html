@@ -4,10 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grand Theft Auto VI Countdown</title>
-    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/layout.css" />
 
-    <!-- Essential Meta Tags -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@200;600&display=swap"/>
+
+    <meta name="description" content="Track the time remaining until GTA VI release date and find official updates."/>
+
     <meta property="og:title" content="Grand Theft Auto VI Countdown" />
     <meta
       property="og:description"
@@ -15,12 +20,11 @@
     />
     <meta
       property="og:image"
-      content="https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_landscape.8aced7fd.jpg&w=1920&q=75"
+      content="https://www.rockstargames.com/VI/_next/static/media/Jason_Lucia_Lock_And_Load_With_Logos_landscape.13z.1pzvhq5dn.jpg"
     />
     <meta property="og:url" content="https://countdown-gta-6.vercel.app" />
     <meta property="og:type" content="website" />
 
-    <!-- X Card Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Grand Theft Auto VI Countdown" />
     <meta
@@ -29,21 +33,22 @@
     />
     <meta
       name="twitter:image"
-      content="https://www.rockstargames.com/VI/_next/image?url=%2FVI%2F_next%2Fstatic%2Fmedia%2FJason_and_Lucia_02_landscape.8aced7fd.jpg&w=1920&q=75"
+      content="https://www.rockstargames.com/VI/_next/static/media/Jason_Lucia_Lock_And_Load_With_Logos_landscape.13z.1pzvhq5dn.jpg"
     />
   </head>
   <body>
-    <script src="js/main.js" defer></script>
     <script src="js/logo.js" defer></script>
+    <script type="module" src="js/main.js"></script>
     <header>
-      <web-logo id="logo"></web-logo>
-      <div class="title-div">
         <h1>How long &apos;till</h1>
+        <a href="https://www.rockstargames.com/VI" id="release-source">
+          <web-logo id="logo" aria-hidden="true"></web-logo>
+        </a>
         <h1>comes out?</h1>
-      </div>
     </header>
     <main>
-      <h1 id="timer"></h1>
+      <p id="timer" role="timer" aria-label="Time remaining">Live countdown unavailable</p>
+      <p id="countdown-status" role="status"></p>
     </main>
     <footer>
       <p id="footer-text"></p>

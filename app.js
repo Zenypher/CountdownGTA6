@@ -1,18 +1,25 @@
 const express = require("express");
-const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const PORT = 5000;
+const port = Number(process.env.PORT || 5000);
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.disable("x-powered-by");
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
-});
+app.use(express.static(path.join(__dirname, "public"), {
+  setHeaders(res, filePath) {
+    const versionedImage = /\.v\d+\.(webp|avif)$/.test(filePath);
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on localhost:${PORT}`);
+    res.setHeader("Cache-Control", versionedImage ? "public, max-age=31536000, immutable" : "no-cache",);
+  },
+}));
+
+app.listen(port, (error) => {
+  if(error) {
+    console.error("Failed to start server:", error.message);
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(`Server is listening at http://localhost:${port}`);
 });

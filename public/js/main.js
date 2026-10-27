@@ -1,44 +1,57 @@
-const pageLogo = document.getElementById("logo");
-const footerText = document.querySelector("#footer-text");
+import { release } from "./config.mjs";
+import { getRemaining } from "./countdown.mjs";
 
-footerText.innerHTML = `&copy; ${new Date().getFullYear()} Sebastian Iosif | Grand Theft Auto VI Countdown | Powered by
-        caffeine and ⭐⭐⭐⭐⭐`;
+const timer = document.getElementById("timer");
+const status = document.getElementById("countdown-status");
+const releaseNote = document.getElementById("release-note");
+const targetMs = Date.parse(release.target);
 
-function startCountdown(targetDateString) {
-  const timerElement = document.getElementById("timer");
-  const targetDate = new Date(targetDateString).getTime();
+document.getElementById("footer-text").textContent = `© ${new Date().getFullYear()} Sebastian Iosif | Grand Theft Auto VI Countdown | Powered by
+        caffeine and ⭐⭐⭐⭐⭐⭐`;
 
-  const interval = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
+document.getElementById("release-source").href = release.sourceUrl;
+document.getElementById("logo").classList.add("animate");
 
-    if (distance < 0) {
-      clearInterval(interval);
-      timerElement.textContent = "Countdown finished";
-      return;
-    }
-
-    const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-    const days = Math.floor(
-      (distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24),
-    );
-    const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-    );
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    timerElement.innerHTML = `${
-      months > 1 ? months + " months" : months + " month"
-    } ${days > 1 ? days + " days" : days + " day"} ${
-      hours > 1 ? hours + " hours" : hours + " hour"
-    } ${minutes > 1 ? minutes + " minutes " : minutes + " minute"} ${
-      seconds > 1 ? seconds + " seconds" : seconds + " second"
-    }`;
-  }, 1000);
+function formatUnit(value, unit) {
+  return `${value} ${unit}${value === 1 ? "" : "s"}`;
 }
 
-addEventListener("DOMContentLoaded", () => {
-  startCountdown("2026-11-19");
-  pageLogo.classList.add("animate");
-});
+function startCountdown() {
+  if(!Number.isFinite(targetMs)) {
+    timer.textContent = "Release date unavailable.";
+    return;
+  }
+
+  const dateLabel = new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "long",
+    timeZone: "UTC",
+  }).format(targetMs);
+
+  let interval;
+
+  function render() {
+    const remaining = getRemaining(targetMs, Date.now());
+
+    if(remaining.expired) {
+      timer.textContent = "Target date reached";
+      status.textContent = "Check official updates for availability";
+      clearInterval(interval);
+      return false;
+    }
+
+    timer.textContent = [
+      formatUnit(remaining.days, "day"),
+      formatUnit(remaining.hours, "hour"),
+      formatUnit(remaining.minutes, "minute"),
+      formatUnit(remaining.seconds, "second"),
+    ].join(" ");
+
+    return true;
+  }
+
+  if (render()) {
+    interval = setInterval(render, 1000);
+  }
+}
+
+startCountdown();

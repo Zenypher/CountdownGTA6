@@ -1,98 +1,19 @@
-@import url("base.css");
-
-/* Phone screen */
-@media only screen and (max-width: 600px) {
-  header {
-    h1 {
-      font-size: 2rem;
-    }
-  }
-
-  footer {
-    font-size: 0.75rem;
-  }
-
-  #logo svg {
-    width: 128px;
-    height: 128px;
-  }
-
-  .title-div {
-    gap: 8rem;
-  }
-
-  #timer {
-    font-size: 4rem;
-  }
-}
-
-/* Large phone screen */
-@media only screen and (min-width: 600px) {
-  header {
-    h1 {
-      font-size: 3rem;
-    }
-  }
-
-  #logo svg {
-    width: 128px;
-    height: 128px;
-  }
-
-  #timer {
-    font-size: 6rem;
-  }
-}
-
-/* Tablet screen */
-@media only screen and (min-width: 768px) {
-  footer {
-    font-size: 0.8rem;
-  }
-
-  .title-div {
-    gap: 10rem;
-  }
-}
-
-/* Laptop screen */
-@media only screen and (min-width: 992px) {
-}
-
-/* Desktop screen */
-@media only screen and (min-width: 1200px) {
-  header {
-    h1 {
-      font-size: 3.5rem;
-    }
-  }
-
-  #logo {
-    top: -20px;
-
-    svg {
-      width: 256px;
-      height: 256px;
-    }
-  }
-
-  #timer {
-    font-size: 5rem;
-  }
-
-  .title-div {
-    gap: 20rem;
-  }
-
-  footer {
-    font-size: 1rem;
-  }
+:root {
+  --text: hsl(0, 0%, 100%);
+  --dark-gradient: hsla(279, 70%, 20%, 70%);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+}
+
+h1,h2,h3,h4 {
+  font-family: "Bebas Neue", sans-serif;
 }
 
 body {
@@ -101,118 +22,98 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
 
-  background: url("/assets/gtaVI_artwork.jpg");
+  color: var(--text);
+  background-color: #12091d;
+  background-image: linear-gradient(to bottom ,hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background.webp");
   background-size: cover;
   background-position: center;
 
-  color: var(--text);
-}
-
-body::before {
-  content: "";
-  background: linear-gradient(
-    to bottom,
-    hsla(224, 69%, 52%, 25%),
-    hsla(323, 97%, 65%, 25%),
-    hsla(29, 77%, 58%, 25%)
-  );
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-  z-index: -2;
 }
 
 header {
   display: flex;
-  min-height: 20vh;
-
-  background: linear-gradient(to bottom, var(--dark-gradient), transparent);
-  color: white;
-
   justify-content: center;
   align-items: center;
-}
+  gap: 2rem;
+  padding: 1rem;
 
-.title-div {
   color: hsl(40, 100%, 75%);
   letter-spacing: 0.05rem;
-
-  display: flex;
-  text-align: center;
-
+  background: linear-gradient(var(--dark-gradient), transparent);
   user-select: none;
 }
 
-.title-div h1:nth-child(1) {
-  animation-name: fade-in-left;
-  animation-duration: 2s;
-  animation-direction: normal;
+header h1:first-child,h1:last-child {
+  animation-duration: 1s;
 }
 
-.title-div h1:nth-child(2) {
-  animation-name: fade-in-right;
-  animation-duration: 2s;
-  animation-duration: normal;
+header h1:first-child {
+  animation-name: fade-in-left;
 }
+
+header h1:last-child {
+  animation-name: fade-in-right;
+}
+
 
 #logo {
-  position: absolute;
+  display: block;
+}
+
+#logo svg {
+  display: block;
+  width: clamp(8rem, 18vw, 14rem);
+  height: auto;
+}
+
+#logo.animate {
+  animation: appear 1s ease-out;
 }
 
 footer {
-  text-align: center;
   padding: 1.5rem;
+  text-align: center;
   color: hsl(40, 100%, 85%);
-
-  p {
-    font-weight: 200;
-    /* animation-name: fade-from-below;
-    animation-duration: 2s; */
-  }
-
-  background: linear-gradient(to top, var(--dark-gradient), transparent);
+  line-height: 1.6;
+  font-weight: 200;
+  background: linear-gradient(transparent, var(--dark-gradient));
 }
 
 main {
-  display: flex;
+  display: grid;
+  place-content: center;
   justify-content: center;
-
+  gap: 1.5rem;
   text-align: center;
 }
 
 #timer {
-  padding: 2rem;
-
-  display: inline-flex;
-  align-items: center;
-
-  letter-spacing: 0.2rem;
-  color: hsl(340, 95%, 75%);
-  text-shadow: 0px 0px 15px var(--dark-gradient);
-
-  text-wrap: wrap;
-
-  animation-name: fade-in;
-  animation-delay: 1s;
-  animation-duration: 0.75s;
-  animation-direction: normal;
+  max-width: 24ch;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: #f77aa8;
+  text-shadow: 0px 0px 10px var(--dark-gradient);
 }
 
-#logo.animate {
-  animation-name: fade-in;
-  animation-duration: 2s;
-  animation-direction: normal;
+#release-note {
+  max-width: 60ch;
+  line-height: 1.6;
 }
 
-@keyframes fade-in {
+@media (prefers-reduced-motion: reduce) {
+  #logo.animate {
+    animation: none;
+  }
+}
+
+@keyframes appear {
   0% {
     filter: blur(25px);
     scale: 0%;
   }
-  65% {
+  55% {
     filter: blur(0px);
     scale: 110%;
   }
@@ -244,14 +145,5 @@ main {
   }
   100% {
     transform: translateX(0px);
-  }
-}
-
-@keyframes fade-from-below {
-  0% {
-    transform: translateY(50px);
-  }
-  100% {
-    transform: translateY(0px);
   }
 }
