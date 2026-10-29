@@ -6,11 +6,9 @@ const status = document.getElementById("countdown-status");
 const releaseNote = document.getElementById("release-note");
 const targetMs = Date.parse(release.target);
 
-document.getElementById("footer-text").textContent = `© ${new Date().getFullYear()} Sebastian Iosif | Grand Theft Auto VI Countdown | Powered by
-        caffeine and ⭐⭐⭐⭐⭐⭐`;
+document.getElementById("footer-text").textContent = `© ${new Date().getFullYear()} Sebastian Iosif | Grand Theft Auto VI Countdown`;
 
 document.getElementById("release-source").href = release.sourceUrl;
-document.getElementById("logo").classList.add("animate");
 
 function formatUnit(value, unit) {
   return `${value} ${unit}${value === 1 ? "" : "s"}`;

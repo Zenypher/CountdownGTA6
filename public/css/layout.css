@@ -1,6 +1,8 @@
 :root {
-  --text: hsl(0, 0%, 100%);
-  --dark-gradient: hsla(279, 70%, 20%, 70%);
+  --dark-gradient: #101120;
+  --text-color: #ffd4a8;
+  --shadow-color: #240038;
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * {
@@ -22,61 +24,37 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
 
-  color: var(--text);
-  background-color: #12091d;
-  background-image: linear-gradient(to bottom ,hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background.webp");
-  background-size: cover;
+  background-color: var(--dark-gradient);
+  background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_mobile.webp");
   background-position: center;
-
+  background-size: cover;
 }
 
 header {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
   padding: 1rem;
 
-  color: hsl(40, 100%, 75%);
+  color: var(--text-color);
   letter-spacing: 0.05rem;
   background: linear-gradient(var(--dark-gradient), transparent);
   user-select: none;
 }
 
-header h1:first-child,h1:last-child {
-  animation-duration: 1s;
+header h1 {
+  animation: fade-in 1s var(--spring);
+  text-shadow: 3px 3px 0 var(--shadow-color);
 }
 
 header h1:first-child {
-  animation-name: fade-in-left;
+  text-align: right;
+  --direction: -1;
 }
 
 header h1:last-child {
-  animation-name: fade-in-right;
-}
-
-
-#logo {
-  display: block;
-}
-
-#logo svg {
-  display: block;
-  width: clamp(8rem, 18vw, 14rem);
-  height: auto;
-}
-
-#logo.animate {
-  animation: appear 1s ease-out;
-}
-
-footer {
-  padding: 1.5rem;
-  text-align: center;
-  color: hsl(40, 100%, 85%);
-  line-height: 1.6;
-  font-weight: 200;
-  background: linear-gradient(transparent, var(--dark-gradient));
+  margin-left: 2rem;
+  --direction: 1;
 }
 
 main {
@@ -87,19 +65,55 @@ main {
   text-align: center;
 }
 
+footer {
+  padding: 1.5rem 2rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  font-weight: 200;
+  font-size: .65rem;
+  background: linear-gradient(transparent, var(--dark-gradient));
+}
+
+#logo {
+  display: block;
+  animation: appear 1s var(--spring);
+
+  svg {
+    width: clamp(8rem, 18vw, 14rem);
+    height: auto;
+  }
+
+}
+
 #timer {
   max-width: 24ch;
   font-family: "Bebas Neue", sans-serif;
   font-size: clamp(2.5rem, 6vw, 5rem);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
-  color: #f77aa8;
-  text-shadow: 0px 0px 10px var(--dark-gradient);
+  color: var(--text-color);
+  text-shadow: 3px 3px 0 var(--shadow-color);
 }
 
 #release-note {
   max-width: 60ch;
   line-height: 1.6;
+}
+
+#wanted-stars {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 30px 30px;
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity .2s var(--spring);
+  user-select: none;
+}
+
+#wanted-stars:hover {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -108,42 +122,45 @@ main {
   }
 }
 
+@media (min-width: 768px) {
+  body {
+    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_tablet.webp");
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_desktop.webp");
+  }
+
+  #wanted-stars {
+    display: block;
+  }
+}
+
 @keyframes appear {
   0% {
     filter: blur(25px);
     scale: 0%;
   }
-  55% {
+  25% {
     filter: blur(0px);
-    scale: 110%;
+    scale: 120%;
   }
   100% {
     scale: 100%;
   }
 }
 
-@keyframes fade-in-left {
+@keyframes fade-in {
   0% {
     filter: blur(50px);
-    transform: translateX(-200px);
+    transform: translateX(calc(200px * var(--direction)));
   }
-  65% {
-    filter: blur(0px);
-  }
-  100% {
-    transform: translateX(0px);
-  }
-}
-
-@keyframes fade-in-right {
-  0% {
-    filter: blur(50px);
-    transform: translateX(200px);
-  }
-  65% {
-    filter: blur(0px);
+  45% {
+    filter: blur(0);
   }
   100% {
-    transform: translateX(0px);
+    transform: translateX(0);
   }
 }
