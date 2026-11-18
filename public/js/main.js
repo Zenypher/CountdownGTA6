@@ -38,11 +38,14 @@ function startCountdown() {
     }
 
     timer.textContent = [
-      formatUnit(remaining.days, "day"),
-      formatUnit(remaining.hours, "hour"),
-      formatUnit(remaining.minutes, "minute"),
-      formatUnit(remaining.seconds, "second"),
-    ].join(" ");
+      [remaining.days, "day"],
+      [remaining.hours, "hour"],
+      [remaining.minutes, "minute"],
+      [remaining.seconds, "second"],
+    ]
+      .filter(([value]) => value > 0)
+      .map(([value, unit]) => formatUnit(value, unit))
+      .join(" ");
 
     return true;
   }
