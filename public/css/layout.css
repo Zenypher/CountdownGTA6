@@ -14,18 +14,21 @@
   font-optical-sizing: auto;
 }
 
-h1,h2,h3,h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Bebas Neue", sans-serif;
 }
 
 body {
   min-height: 100vh;
-  max-height: 100dvh;
+  min-height: 100dvh;
   display: grid;
   grid-template-rows: auto 1fr auto;
 
   background-color: var(--dark-gradient);
-  background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_mobile.webp");
+  background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_mobile.v1.webp");
   background-position: center;
   background-size: cover;
 }
@@ -43,6 +46,9 @@ header {
 }
 
 header h1 {
+  min-width: 0;
+  flex: 1;
+  font-size: clamp(1.35rem, 4vw, 2rem);
   animation: fade-in 1s var(--spring);
   text-shadow: 3px 3px 0 var(--shadow-color);
 }
@@ -58,6 +64,8 @@ header h1:last-child {
 }
 
 main {
+  min-width: 0;
+  padding: 1rem;
   display: grid;
   place-content: center;
   justify-content: center;
@@ -70,7 +78,7 @@ footer {
   color: var(--text-color);
   line-height: 1.6;
   font-weight: 200;
-  font-size: .65rem;
+  font-size: 0.65rem;
   background: linear-gradient(transparent, var(--dark-gradient));
 }
 
@@ -78,11 +86,11 @@ footer {
   display: block;
   animation: appear 1s var(--spring);
 
-  svg {
-    width: clamp(8rem, 18vw, 14rem);
-    height: auto;
-  }
+}
 
+#logo img {
+  width: clamp(8rem, 18vw, 14rem);
+  height: auto;
 }
 
 #timer {
@@ -95,9 +103,13 @@ footer {
   text-shadow: 3px 3px 0 var(--shadow-color);
 }
 
-#release-note {
-  max-width: 60ch;
-  line-height: 1.6;
+#timer[data-state="complete"] {
+  max-width: min(100ch, 100%);
+  font-size: clamp(1.25rem, 2.4vw, 2.25rem);
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  margin-inline: auto;
 }
 
 #wanted-stars {
@@ -108,7 +120,7 @@ footer {
   margin: 30px 30px;
   font-size: 1.5rem;
   opacity: 0;
-  transition: opacity .2s var(--spring);
+  transition: opacity 0.2s var(--spring);
   user-select: none;
 }
 
@@ -116,21 +128,33 @@ footer {
   opacity: 1;
 }
 
+#timer, #countdown-status, footer {
+  animation: content-enter 0.9s var(--spring) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  #logo.animate {
-    animation: none;
+  body[data-finale="masked"] #finale-overlay {
+    animation: none !important;
+  }
+
+  header h1,
+  #logo,
+  #timer,
+  #countdown-status,
+  footer {
+    animation: none !important;
   }
 }
 
 @media (min-width: 768px) {
   body {
-    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_tablet.webp");
+    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_tablet.v1.webp");
   }
 }
 
 @media (min-width: 1024px) {
   body {
-    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_desktop.webp");
+    background-image: linear-gradient(hsla(224, 69%, 52%, 20%), hsla(323, 97%, 65%, 20%), hsla(29, 77%, 58%, 20%)), url("/assets/background_desktop.v1.webp");
   }
 
   #wanted-stars {
@@ -138,13 +162,25 @@ footer {
   }
 }
 
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes appear {
   0% {
-    filter: blur(25px);
+    opacity: 0;
     scale: 0%;
   }
   25% {
-    filter: blur(0px);
+    opacity: 1;
     scale: 120%;
   }
   100% {
@@ -154,13 +190,80 @@ footer {
 
 @keyframes fade-in {
   0% {
-    filter: blur(50px);
+    opacity: 0;
     transform: translateX(calc(200px * var(--direction)));
   }
   45% {
-    filter: blur(0);
+    opacity: 1;
   }
   100% {
     transform: translateX(0);
   }
+}
+
+@keyframes finale-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#finale-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#finale-overlay[hidden] {
+  display: none;
+}
+
+.finale-gradient,
+#finale-portal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.finale-gradient {
+  /* Identical stops and direction to the existing logo's main gradient. */
+  background: linear-gradient(to bottom, #2b60da var(--logo-top), #ff4cb9 50%, #e6953e var(--logo-bottom));
+  opacity: var(--gradient-opacity, 1);
+}
+
+#finale-portal {
+  opacity: var(--portal-opacity, 1);
+}
+
+#finale-portal > rect {
+  fill-opacity: 0.98;
+}
+
+body[data-finale="masked"] #finale-overlay {
+  animation: finale-enter 5s ease-in-out both;
+}
+
+body:is([data-finale="masked"], [data-finale="zooming"]) {
+  overflow: hidden;
+}
+
+body:is([data-finale="masked"], [data-finale="zooming"]) :is(header, footer, #wanted-stars) {
+  visibility: hidden;
+}
+
+body:is([data-finale="masked"], [data-finale="zooming"]) #timer {
+  position: fixed;
+  z-index: 20;
+  bottom: clamp(10rem, 20vh, 13rem);
+  left: 1rem;
+  right: 1rem;
+  max-width: none;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  animation: finale-enter 5s ease-in-out both;
 }

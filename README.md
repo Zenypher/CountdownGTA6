@@ -1,162 +1,172 @@
-# GTA VI Countdown Website
+# GTA VI Countdown
 
-A sleek, real-time countdown timer website for the Grand Theft Auto VI release date. Built with vanilla HTML, CSS, and JavaScript with an Express backend.
+A fan-made countdown built with HTML, CSS, and browser JavaScript modules.
+Express serves the static files locally. The final hour automatically displays a vector logo mask and music-driven
+countdown sequence.
 
-## Features
+## Run locally
 
-- **Live Countdown Timer** — Real-time countdown showing months, days, hours, minutes, and seconds until GTA VI releases
-- **Modern Aesthetic** — Colorful, urban-inspired design with gradient overlays and smooth animations
-- **Blurred Background** — Eye-catching background image and gradient overlay effect
-- **Custom Fonts** — Typography using Google Fonts for a premium feel
-
-## Tech Stack
-
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript
-- **Backend:** Node.js with Express.js
-- **Styling:** Custom CSS with Flexbox and Grid layouts
-- **Server:** Express with CORS support
-- **Static Files:** Served via Express static middleware
-
-## Project Structure
-
-```
-countdowngta6/
-├── public/
-│   ├── css/
-│   │   └── base.css
-│   │   └── layout.css
-│   ├── js/
-│   │   └── main.js
-│   │   └── logo.js
-│   ├── assets/
-│   │   └── gtaVI_artwork.jpg
-│   └── index.html
-├── app.js
-├── package.json
-└── README.md
-```
-
-## Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/Zenypher/CountdownGTA6.git
-   cd countdowngta6
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Start the server**
-
-   ```bash
-   npm start
-   ```
-
-   Or with hot reload:
-
-   ```bash
-   npm run dev
-   ```
-
-4. **Open in browser**
-   Navigate to `http://localhost:5000`
-
-## Setup Guide
-
-### Dependencies
-
-Install Express and CORS:
+Use Node.js 24.x and npm.
 
 ```bash
-npm install express cors
+npm ci
+npm start
 ```
 
-### Development
+Open <http://localhost:5000>. Use `npm run dev` for automatic server restarts
+while editing server files; refresh the browser after frontend changes.
 
-For automatic server restarts during development:
+To choose another port:
 
 ```bash
-npm install --save-dev nodemon
+PORT=8080 npm start
 ```
 
-Add to `package.json`:
+## Countdown behavior
 
-```json
-"scripts": {
-  "start": "node app.js",
-  "dev": "nodemon app.js"
-}
-```
-
-## How It Works
-
-The countdown timer runs every second, calculating the time remaining until the GTA VI release date. It displays:
-
-- **Months** — Number of full months remaining
-- **Days** — Remaining days after months
-- **Hours** — Remaining hours after days
-- **Minutes** — Remaining minutes after hours
-- **Seconds** — Remaining seconds
-
-The timer automatically updates in real-time without requiring a page refresh.
-
-## Customization
-
-### Change the Release Date
-
-Edit the countdown date in `js/main.js`:
+The target is configured in `public/js/config.mjs`:
 
 ```javascript
-startCountdown("2026-05-26"); // Update to actual release date
+export const release = Object.freeze({
+  target: "2026-11-19T00:00:00Z",
+  sourceUrl: "https://www.rockstargames.com/VI",
+});
 ```
 
-### Modify Colors and Styling
+This is an explicit midnight UTC target, not a claim that the launch time has
+been confirmed. Update it from an official announcement when appropriate.
 
-Edit `public/css/base.css` or `public/css/layout` to customize:
+The timer renders immediately and shows days, hours, minutes, and seconds.
+Zero-value units are omitted; non-breaking spaces keep each value beside its
+label. The calculation uses the current clock on each update rather than
+subtracting seconds from a counter. Invalid targets show an unavailable message.
 
-- Gradient overlay colors
-- Background blur amount
-- Font sizes and colors
-- Layout spacing
+At zero, the headings change to “The wait is over” and “Welcome to Vice City,”
+and the timer becomes a multiline completion message with a smaller font.
+The completion wording is configured near the top of `public/js/main.js`.
 
-### Update Background Image
+## Final-hour sequence
 
-Replace `assets/gtaVI_artwork.jpg` with your own image file.
+The finale activates automatically when the configured release target is one hour
+away, including when the page is opened during that hour. There are no preview
+controls, simulated targets, or query parameters to activate a test mode.
 
-## Browser Support
+### Current timeline
 
-Works on all modern browsers:
+| Time remaining | Behavior |
+| --- | --- |
+| One hour | Black layer and gradient logo cutout appear |
+| 12 seconds | Music starts once, from the beginning of the MP3 |
+| 8 seconds | Zoom starts, after the four-second hold |
+| 3 seconds | Gradient begins fading to reveal the normal artwork |
+| Zero | Overlay disappears, completion text appears, entrance animations replay |
 
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
+Audio is created and loaded only within the countdown's final minute; ordinary
+visits do not request the MP3 immediately. Music plays without looping and may continue after zero until the file ends.
+The audio and animation share a countdown trigger; this implementation does not
+seek to the end of the track or synchronize individual musical beats. Browser
+autoplay rules may block playback, especially without a prior user interaction.
 
-## Performance Notes
+Timing constants live in `public/js/finale.mjs`:
 
-- Images are optimized for web loading
-- Countdown uses efficient `setInterval()` with minimal DOM updates
-- Static files are served with caching headers
-- CSS animations run smoothly on 60 FPS
+```javascript
+export const FINAL_HOUR_MS = 60 * 60 * 1000;
+export const MUSIC_LEAD_MS = 12 * 1000;
+export const TRANSITION_DELAY_MS = 4 * 1000;
+export const TRANSITION_MS = MUSIC_LEAD_MS - TRANSITION_DELAY_MS;
+```
 
-## Disclaimer
+Keep the music window
+longer than the hold when changing these values. The gradient fade duration is
+three seconds in the scene renderer.
 
-This is a fan project and is not affiliated with Rockstar Games or Take-Two Interactive. Grand Theft Auto is a trademark of Rockstar Games. All rights belong to their respective owners.
+### Rendering and styling
 
-## License
+The mask uses inline SVG paths in `public/index.html`. Each frame updates a
+vector transformation matrix rather than enlarging a filtered image. The camera
+zooms through the hole in the “e” in “theft,” with an endpoint calculated to cover
+the viewport. Unchanged geometry and opacity values are skipped, and the frame
+loop owns scene rendering while the one-second timer updates text.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+`artwork/gta-vi-logo.svg` is the canonical source for both logo variants. To edit
+the logo, update that source and run:
 
-## Future Enhancements
+```bash
+python3 scripts/prepare-assets.py
+```
 
-- Social media sharing buttons
-- News feed section
-- API integration for official GTA VI updates
-- Better responsive design
-- New and refined animations
-- Slideshow style background image
+This developer-only step requires Python 3 with its standard library. It generates
+`public/assets/gta-vi-logo.v1.svg` and the inline mask, removing unused styles,
+unreferenced SVG definitions, and editor metadata from the header asset. Normal
+startup and hosting do not need Python. The header loads the generated SVG as a
+cacheable image; the custom element no longer embeds the whole asset in JavaScript.
+Increment the output asset version and update its reference in `logo.js` and the
+generator when publishing changed artwork with immutable caching.
+
+Edit `public/css/layout.css` for the gradient colors, entrance durations, timer
+styles, and black-layer opacity (`#finale-portal > rect`, currently `0.98`). The
+background switches between mobile, tablet, and desktop WebP assets at 768px and
+1024px. Reduced-motion preferences disable entrance animations and the zoom;
+the finale uses a fade instead. Entrance animations use opacity and movement
+without blur filters.
+
+## Project structure
+
+```text
+app.js                         Local Express static server
+public/index.html              Page markup and inline vector mask
+public/css/layout.css          Layout, backgrounds, and animations
+public/js/config.mjs           Release target and official link
+public/js/countdown.mjs        Pure remaining-time calculation
+public/js/main.js              Countdown UI and animation scheduling
+public/js/finale.mjs            Finale state, geometry, and entrance replay
+public/js/finale-audio.mjs      One-shot audio playback and reset
+public/js/logo.js              Lightweight logo image custom element
+artwork/gta-vi-logo.svg         Canonical logo source
+scripts/prepare-assets.py       Rebuilds optimized SVG and inline mask
+public/assets/                 Artwork, music, and SVG reference
+tests/                        Countdown, timing, geometry, audio, frame-loop tests
+```
+
+## Validation
+
+```bash
+npm test
+```
+
+Tests cover countdown boundaries, invalid dates, finale phases, vector camera
+geometry, one-shot playback, and animation-loop scheduling/reset. Timing
+expectations derive from the configuration constants.
+
+Also check the page in a browser at mobile and desktop widths, with zoom and
+reduced motion enabled. Audio playback depends on browser autoplay permissions. The project
+targets current browsers supporting JavaScript modules, SVG masks, CSS `clamp()`,
+and the `inert` property; old browser version guarantees are not provided.
+
+## Hosting and caching
+
+Deploy `public/` to a static host, or run `npm start` on a Node host. Static hosting
+needs no frontend build step. Google Fonts is an external dependency; fallback
+fonts remain available when its requests fail.
+
+The local server revalidates ordinary assets with `Cache-Control: no-cache`.
+Images named with a `.v<number>.webp`, `.v<number>.avif`, or `.v<number>.svg` suffix get a one-year
+immutable cache policy. The backgrounds and generated header logo use versioned filenames. Their content
+and dimensions are unchanged by the filename versioning. Change the version and
+update references whenever publishing new image contents. Configure
+production headers through your static hosting provider when Express is bypassed.
+
+## License and third-party assets
+
+The project's original code is available under the [MIT License](LICENSE),
+copyright 2026 Sebastian Iosif.
+
+This repository also contains GTA artwork, logos, and music. The project's MIT
+license does not establish permission to reuse third-party material. Their
+owners retain their rights. Asset source URLs, authorship, and redistribution
+permissions have not been documented here; verify and record those separately
+before redistributing the assets. Google Fonts and npm dependencies have their
+own licenses.
+
+This is an unofficial fan project, unaffiliated with Rockstar Games or Take-Two
+Interactive. Grand Theft Auto names and logos belong to their respective owners.
