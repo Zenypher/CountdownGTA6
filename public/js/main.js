@@ -11,7 +11,7 @@ document.getElementById("footer-text").textContent = `© ${new Date().getFullYea
 document.getElementById("release-source").href = release.sourceUrl;
 
 function formatUnit(value, unit) {
-  return `${value} ${unit}${value === 1 ? "" : "s"}`;
+  return `${value}\u00a0${unit}${value === 1 ? "" : "s"}`;
 }
 
 function startCountdown() {
